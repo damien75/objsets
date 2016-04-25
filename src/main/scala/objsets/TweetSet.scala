@@ -77,7 +77,13 @@ abstract class TweetSet {
     * Question: Should we implment this method here, or should it remain abstract
     * and be implemented in the subclasses?
     */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList = this match {
+    case _: Empty => Nil
+    case _: NonEmpty => {
+      val bestTweet = this.mostRetweeted
+      new Cons(bestTweet, this.remove(bestTweet).descendingByRetweet)
+    }
+  }
 
   /**
     * The following methods are already implemented
